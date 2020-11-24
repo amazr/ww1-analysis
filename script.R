@@ -303,9 +303,29 @@ Pre_Corpora <- clean(rbind(Pre_1,Pre_2,Pre_3,Pre_4,Pre_5,Pre_6,Pre_7,Pre_8,Pre_9
 Post_Corpora <- clean(rbind(Post_1,Post_2,Post_3,Post_4,Post_5,Post_6,Post_7,Post_8,Post_9,Post_10,Post_11,Post_12,Post_13,Post_14,Post_15,Post_16,Post_17,Post_18,Post_19,Post_20,Post_21,Post_22,Post_23,Post_24,Post_25))
 
 #######################
-## Corpora Analysis
+## Functions
 #######################
+
+## Returns the top 15 words of a given emotion
+emotion_Count <- function(corpus, emotion_list)
+{
+  temp <- corpus%>%
+    inner_join(emotion_list)%>%
+    count(word, sort = TRUE)%>%
+    top_n(15)
+  return(temp)
+}
+
+######################
+## Corpora analysis
+######################
 
 nrc <- lexicon_nrc()
 nrc_fear <- nrc%>%
   filter(sentiment == "fear")
+
+pre_fear <- emotion_Count(Pre_Corpora, nrc_fear)
+post_fear <- emotion_Count(Post_Corpora, nrc_fear)
+
+
+
