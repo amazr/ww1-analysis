@@ -5,6 +5,7 @@ library(textdata)
 library(pdftools)
 data("stop_words")
 SMART <- stop_words %>% filter(lexicon == "SMART")
+BING <- get_sentiments("bing")
 
 ####################
 ## Create Corpora
@@ -299,8 +300,10 @@ clean <- function(corpus)
 }
 
 ## Build the final two corpora
-Pre_Corpora <- clean(rbind(Pre_1,Pre_2,Pre_3,Pre_4,Pre_5,Pre_6,Pre_7,Pre_8,Pre_9,Pre_10,Pre_11,Pre_12,Pre_13,Pre_14,Pre_15,Pre_16,Pre_17,Pre_18,Pre_19,Pre_20,Pre_21,Pre_22,Pre_23,Pre_24,Pre_25))
-Post_Corpora <- clean(rbind(Post_1,Post_2,Post_3,Post_4,Post_5,Post_6,Post_7,Post_8,Post_9,Post_10,Post_11,Post_12,Post_13,Post_14,Post_15,Post_16,Post_17,Post_18,Post_19,Post_20,Post_21,Post_22,Post_23,Post_24,Post_25))
+Pre_Corpora <- rbind(Pre_1,Pre_2,Pre_3,Pre_4,Pre_5,Pre_6,Pre_7,Pre_8,Pre_9,Pre_10,Pre_11,Pre_12,Pre_13,Pre_14,Pre_15,Pre_16,Pre_17,Pre_18,Pre_19,Pre_20,Pre_21,Pre_22,Pre_23,Pre_24,Pre_25)
+Post_Corpora <- rbind(Post_1,Post_2,Post_3,Post_4,Post_5,Post_6,Post_7,Post_8,Post_9,Post_10,Post_11,Post_12,Post_13,Post_14,Post_15,Post_16,Post_17,Post_18,Post_19,Post_20,Post_21,Post_22,Post_23,Post_24,Post_25)
+Clean_Pre_Corpora <- clean(Pre_Corpora)
+Clean_Post_Corpora <- clean(Post_Corpora)
 
 #######################
 ## Functions
@@ -316,6 +319,31 @@ emotion_Count <- function(corpus, emotion_list)
   return(temp)
 }
 
+## Returns 
+get_AFINN_Sentiment <- function(corpus, lexicon)
+{
+  temp <- corpus%>%
+    inner_join(lexicon)%>%
+    group_by(title)%>%
+    summarise(sentiment = sum(value))%>%
+    arrange(sentiment, .by_group = TRUE)
+  return(temp)
+}
+
+get_Contributing_Negative_Words <- function(corpus)
+{
+  temp <- corpus%>%
+    inner_join(BING)%>%
+    count(word, sentiment)%>%
+    group_by(sentiment)%>%
+    top_n(15)%>%
+    ungroup()%>%
+    mutate(word = reorder(word,n))%>%
+    group_by(sentiment)%>%
+    arrange(desc(n), .by_group = TRUE)
+  return(temp)
+}
+
 ######################
 ## Corpora analysis
 ######################
@@ -324,8 +352,12 @@ nrc <- lexicon_nrc()
 nrc_fear <- nrc%>%
   filter(sentiment == "fear")
 
-pre_fear <- emotion_Count(Pre_Corpora, nrc_fear)
-post_fear <- emotion_Count(Post_Corpora, nrc_fear)
+pre_fear <- emotion_Count(Clean_Pre_Corpora, nrc_fear)
+post_fear <- emotion_Count(Clean_Post_Corpora, nrc_fear)
 
+AFINN <- lexicon_afinn()
+pre_AFINN_sentiment <- get_AFINN_Sentiment(Clean_Pre_Corpora, AFINN)
+post_AFINN_sentiment <- get_AFINN_Sentiment(Clean_Post_Corpora, AFINN)
 
-
+pre_top_negative <- get_Contributing_Negative_Words(Clean_Pre_Corpora)
+post_top_negative <- get_Contributing_Negative_Words(Clean_Post_Corpora)
