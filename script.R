@@ -409,26 +409,6 @@ get_Skipgrams <- function(corpus)
   return(normalized_skipgrams)
 }
 
-get_War_Probs <- function(normalized_corpus)
-{
-  war_probs <- normalized_corpus%>%
-    filter(word1 == "war")%>%
-    arrange(-p_together)
-  war_probs = war_probs[-1,c(2,7)]%>%
-    top_n(25)
-  return(war_probs)
-}
-
-get_Death_Probs <- function(normalized_corpus)
-{
-  death_probs <- normalized_corpus%>%
-    filter(word1 == "death")%>%
-    arrange(-p_together)
-  death_probs = death_probs[-1,c(2,7)]%>%
-    top_n(25)
-  return(death_probs)
-}
-
 get_Female_Probs <- function(normalized_corpus)
 {
   female_probs <- normalized_corpus%>%
@@ -439,14 +419,14 @@ get_Female_Probs <- function(normalized_corpus)
   return(female_probs)
 }
 
-get_Race_Probs <- function(normalized_corpus)
+get_Word_Probs <- function(normalized_corpus,word)
 {
-  race_probs <- normalized_corpus%>%
-    filter(word1 == "race")%>%
+  this_probs <- normalized_corpus%>%
+    filter(word1 == word & word2 != word)%>%
     arrange(-p_together)
-  race_probs = race_probs[-1,c(2,7)]%>%
+  this_probs = this_probs[-1,c(2,7)]%>%
     top_n(25)
-  return(race_probs)
+  return(this_probs)
 }
 
 
@@ -486,32 +466,39 @@ Pre_Skipgrams <- get_Skipgrams(Pre_Corpora)
 Post_Skipgrams <- get_Skipgrams(Post_Corpora)
 
 #Get skipgrams based on the word "war"
-Pre_Wargram <- get_War_Probs(Pre_Skipgrams)
-Post_Wargram <- get_War_Probs(Post_Skipgrams)
+Pre_Wargram <- get_Word_Probs(Pre_Skipgrams,"war")
+Post_Wargram <- get_Word_Probs(Post_Skipgrams,"war")
 
 #Get skipgrams based on the word "death"
-Pre_Deathgram <- get_Death_Probs(Pre_Skipgrams)
-Post_Deathgram <- get_Death_Probs(Post_Skipgrams)
+Pre_Deathgram <- get_Word_Probs(Pre_Skipgrams,"death")
+Post_Deathgram <- get_Word_Probs(Post_Skipgrams,"death")
 
 Pre_Femalegram <- get_Female_Probs(Pre_Skipgrams)
 Post_Femalegram <- get_Female_Probs(Post_Skipgrams)
 
-Pre_Race <- get_Race_Probs(Pre_Skipgrams)
-Post_Race <- get_Race_Probs(Post_Skipgrams)
+Pre_Race <- get_Word_Probs(Pre_Skipgrams,"race")
+Post_Race <- get_Word_Probs(Post_Skipgrams,"race")
 
-pre <- Pre_Skipgrams%>%
-  filter(word1 == "economies")%>%
-  arrange(-p_together)
-pre = pre[-1,c(2,7)]%>%
-  top_n(25)
-View(pre)
+Pre_American <- get_Word_Probs(Pre_Skipgrams,"american")
+Post_American <- get_Word_Probs(Post_Skipgrams,"american")
+View(Pre_American)
+View(Post_American)
 
-post <- Post_Skipgrams%>%
-  filter(word1 == "economies")%>%
-  arrange(-p_together)
-post = post[-1,c(2,7)]%>%
-  top_n(25)
-View(post)
+Pre_german <- get_Word_Probs(Pre_Skipgrams,"german")
+Post_german <- get_Word_Probs(Post_Skipgrams,"german")
+View(Pre_german)
+View(Post_german)
+
+Pre_American <- get_Word_Probs(Pre_Skipgrams,"america")
+Post_American <- get_Word_Probs(Post_Skipgrams,"america")
+View(Pre_America)
+View(Post_America)
+
+Pre_germany <- get_Word_Probs(Pre_Skipgrams,"germany")
+Post_germany <- get_Word_Probs(Post_Skipgrams,"germany")
+View(Pre_germany)
+View(Post_germany)
+
 
 ######################
 ## GGplots
@@ -594,4 +581,40 @@ ggplot(Post_Race)+  #tells which data to use
   theme(plot.title = element_text(hjust = 0.5))+ #centering title
   xlab(NULL)
 
+#America
+ggplot(Pre_America)+  #tells which data to use
+  aes(x=reorder(word2,-p_together,sum), y=p_together)+ #Using the word2 and probability data
+  coord_flip()+
+  geom_col(color="firebrick4", fill="lightcoral")+ #extra code to make the graph colorful
+  ggtitle("Pre America SkipGram")+ #adding a title
+  ylab("Probability of Close Occurrence")+ #adding a y label
+  theme(plot.title = element_text(hjust = 0.5))+ #centering title
+  xlab(NULL)
 
+ggplot(Post_America)+  #tells which data to use
+  aes(x=reorder(word2,-p_together,sum), y=p_together)+ #Using the word2 and probability data
+  coord_flip()+
+  geom_col(color="firebrick4", fill="lightcoral")+ #extra code to make the graph colorful
+  ggtitle("Post America SkipGram")+ #adding a title
+  ylab("Probability of Close Occurrence")+ #adding a y label
+  theme(plot.title = element_text(hjust = 0.5))+ #centering title
+  xlab(NULL)
+
+#Germany
+ggplot(Pre_german)+  #tells which data to use
+  aes(x=reorder(word2,-p_together,sum), y=p_together)+ #Using the word2 and probability data
+  coord_flip()+
+  geom_col(color="firebrick4", fill="lightcoral")+ #extra code to make the graph colorful
+  ggtitle("Pre German SkipGram")+ #adding a title
+  ylab("Probability of Close Occurrence")+ #adding a y label
+  theme(plot.title = element_text(hjust = 0.5))+ #centering title
+  xlab(NULL)
+
+ggplot(Post_german)+  #tells which data to use
+  aes(x=reorder(word2,-p_together,sum), y=p_together)+ #Using the word2 and probability data
+  coord_flip()+
+  geom_col(color="firebrick4", fill="lightcoral")+ #extra code to make the graph colorful
+  ggtitle("Post German SkipGram")+ #adding a title
+  ylab("Probability of Close Occurrence")+ #adding a y label
+  theme(plot.title = element_text(hjust = 0.5))+ #centering title
+  xlab(NULL)
