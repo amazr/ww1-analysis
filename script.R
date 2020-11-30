@@ -3,6 +3,10 @@ library(gutenbergr)
 library(tidytext)
 library(textdata)
 library(pdftools)
+library(widyr)
+library(ggpubr)
+library(tm)
+library(eply)
 data("stop_words")
 SMART <- stop_words %>% filter(lexicon == "SMART")
 BING <- get_sentiments("bing")
@@ -319,6 +323,14 @@ emotion_Count <- function(corpus, emotion_list)
   return(temp)
 }
 
+# Returns the percentage of fear words in the corpus
+emotion_Percent <- function(corpus,emotion_list)
+{
+  temp <- corpus%>%
+    inner_join(emotion_list)
+  return((nrow(temp)/nrow(corpus))*100)
+}
+
 ## Returns 
 get_AFINN_Sentiment <- function(corpus, lexicon)
 {
@@ -344,20 +356,242 @@ get_Contributing_Negative_Words <- function(corpus)
   return(temp)
 }
 
+create_Word_Prob_Corpus <- function(corpus)
+{
+  
+  temp <- corpus%>%
+    mutate(lineID = row_number())%>%
+    unnest_tokens(word, text, token ="ngrams", n=1)%>%
+    count(word, sort = TRUE)%>%
+    mutate(p = n/sum(n))
+  return(temp)
+}
+
+create_Skipgrams <- function(corpus)
+{
+  temp <- corpus%>%
+    unnest_tokens(ngram, text, token = "ngrams", n = 8) %>%     # create 8-grams
+    mutate(ngramID = row_number()) %>%                          # create an index of each 8-gram
+    mutate(skipgramID = ngramID)%>%                       # create a nex cobined index joining lineID and ngramID
+    unnest_tokens(word, ngram)                                  # re-tokenize the text by word
+  return(temp)
+}
+
+word_Occur_Prob <- function(corpus)
+{
+  temp <- corpus%>%
+    pairwise_count(word, skipgramID, diag = TRUE, sort = TRUE)%>%   # counting word co-occurence
+    mutate(p= n/sum(n))
+  return(temp)
+}
+
+get_Normalized_Prob <- function(corpus, corpus_prob)
+{
+  temp <- corpus %>%
+    filter(n>10) %>%                            # select word pairs that occur more than 10 times
+    rename(word1 = item1, word2 = item2) %>%    # rename the columns of data for clarity
+    left_join(corpus_prob %>%              # use a left_join() to add probabilties
+                select(word1 = word, p1 = p),   # instructing r which columns of data to match
+              by = "word1") %>%
+    left_join(corpus_prob %>%              # now do the same thing for word #2
+                select(word2 = word, p2 = p),
+              by = "word2") %>%
+    mutate(p_together = p/p1/p2) #determining probability of words appearing together
+  return(temp)
+}  
+
+get_Skipgrams <- function(corpus)
+{
+  corpus_prob <- create_Word_Prob_Corpus(corpus)
+  skipgrams <- create_Skipgrams(corpus)
+  skipgram_prob <- word_Occur_Prob(skipgrams)
+  normalized_skipgrams <- get_Normalized_Prob(skipgram_prob, corpus_prob)
+  return(normalized_skipgrams)
+}
+
+get_War_Probs <- function(normalized_corpus)
+{
+  war_probs <- normalized_corpus%>%
+    filter(word1 == "war")%>%
+    arrange(-p_together)
+  war_probs = war_probs[-1,c(2,7)]%>%
+    top_n(25)
+  return(war_probs)
+}
+
+get_Death_Probs <- function(normalized_corpus)
+{
+  death_probs <- normalized_corpus%>%
+    filter(word1 == "death")%>%
+    arrange(-p_together)
+  death_probs = death_probs[-1,c(2,7)]%>%
+    top_n(25)
+  return(death_probs)
+}
+
+get_Female_Probs <- function(normalized_corpus)
+{
+  female_probs <- normalized_corpus%>%
+    filter(word1 == "she" | word1 == "her" | word1 == "hers" | word1 == "woman" | word1 == "girl")%>%
+    arrange(-p_together)
+  female_probs = female_probs[-1,c(2,7)]%>%
+    top_n(25)
+  return(female_probs)
+}
+
+get_Race_Probs <- function(normalized_corpus)
+{
+  race_probs <- normalized_corpus%>%
+    filter(word1 == "race")%>%
+    arrange(-p_together)
+  race_probs = race_probs[-1,c(2,7)]%>%
+    top_n(25)
+  return(race_probs)
+}
+
+
 ######################
 ## Corpora analysis
 ######################
 
+# Emotion Percentages
 nrc <- lexicon_nrc()
 nrc_fear <- nrc%>%
   filter(sentiment == "fear")
+nrc_sadness <- nrc%>%
+  filter(sentiment == "sadness")
+nrc_anger <- nrc%>%
+  filter(sentiment == "anger")
 
-pre_fear <- emotion_Count(Clean_Pre_Corpora, nrc_fear)
-post_fear <- emotion_Count(Clean_Post_Corpora, nrc_fear)
+pre_fear_percent <- emotion_Percent(Clean_Pre_Corpora, nrc_fear)
+post_fear_percent <- emotion_Percent(Clean_Post_Corpora, nrc_fear) 
 
+pre_sadness_percent <- emotion_Percent(Clean_Pre_Corpora, nrc_sadness)
+post_sadness_percent <- emotion_Percent(Clean_Post_Corpora, nrc_sadness)
+
+pre_anger_percent <- emotion_Percent(Clean_Pre_Corpora, nrc_anger)
+post_anger_percent <- emotion_Percent(Clean_Post_Corpora, nrc_anger) 
+
+#AFINN Sentiment
 AFINN <- lexicon_afinn()
 pre_AFINN_sentiment <- get_AFINN_Sentiment(Clean_Pre_Corpora, AFINN)
 post_AFINN_sentiment <- get_AFINN_Sentiment(Clean_Post_Corpora, AFINN)
 
+#Negative Words
 pre_top_negative <- get_Contributing_Negative_Words(Clean_Pre_Corpora)
 post_top_negative <- get_Contributing_Negative_Words(Clean_Post_Corpora)
+
+#Create Probability Corporas
+Pre_Skipgrams <- get_Skipgrams(Pre_Corpora)
+Post_Skipgrams <- get_Skipgrams(Post_Corpora)
+
+#Get skipgrams based on the word "war"
+Pre_Wargram <- get_War_Probs(Pre_Skipgrams)
+Post_Wargram <- get_War_Probs(Post_Skipgrams)
+
+#Get skipgrams based on the word "death"
+Pre_Deathgram <- get_Death_Probs(Pre_Skipgrams)
+Post_Deathgram <- get_Death_Probs(Post_Skipgrams)
+
+Pre_Femalegram <- get_Female_Probs(Pre_Skipgrams)
+Post_Femalegram <- get_Female_Probs(Post_Skipgrams)
+
+Pre_Race <- get_Race_Probs(Pre_Skipgrams)
+Post_Race <- get_Race_Probs(Post_Skipgrams)
+
+pre <- Pre_Skipgrams%>%
+  filter(word1 == "economies")%>%
+  arrange(-p_together)
+pre = pre[-1,c(2,7)]%>%
+  top_n(25)
+View(pre)
+
+post <- Post_Skipgrams%>%
+  filter(word1 == "economies")%>%
+  arrange(-p_together)
+post = post[-1,c(2,7)]%>%
+  top_n(25)
+View(post)
+
+######################
+## GGplots
+######################
+
+#WARARARAWAWRARRWAWR
+ggplot(Pre_Wargram)+  #tells which data to use
+  aes(x=reorder(word2,-p_together,sum), y=p_together)+ #Using the word2 and probability data
+  coord_flip()+
+  geom_col(color="firebrick4", fill="lightcoral")+ #extra code to make the graph colorful
+  ggtitle("Pre War SkipGram")+ #adding a title
+  ylab("Probability of Close Occurrence")+ #adding a y label
+  theme(plot.title = element_text(hjust = 0.5))+ #centering title
+  xlab(NULL)
+
+ggplot(Post_Wargram)+  #tells which data to use
+  aes(x=reorder(word2,-p_together,sum), y=p_together)+ #Using the word2 and probability data
+  coord_flip()+
+  geom_col(color="firebrick4", fill="lightcoral")+ #extra code to make the graph colorful
+  ggtitle("Post War SkipGram")+ #adding a title
+  ylab("Probability of Close Occurrence")+ #adding a y label
+  theme(plot.title = element_text(hjust = 0.5))+ #centering title
+  xlab(NULL)
+
+
+#DEATH!!!!!!!!!!!!
+ggplot(Pre_Deathgram)+  #tells which data to use
+  aes(x=reorder(word2,-p_together,sum), y=p_together)+ #Using the word2 and probability data
+  coord_flip()+
+  geom_col(color="firebrick4", fill="lightcoral")+ #extra code to make the graph colorful
+  ggtitle("Pre Death SkipGram")+ #adding a title
+  ylab("Probability of Close Occurrence")+ #adding a y label
+  theme(plot.title = element_text(hjust = 0.5))+ #centering title
+  xlab(NULL)
+
+ggplot(Post_Deathgram)+  #tells which data to use
+  aes(x=reorder(word2,-p_together,sum), y=p_together)+ #Using the word2 and probability data
+  coord_flip()+
+  geom_col(color="firebrick4", fill="lightcoral")+ #extra code to make the graph colorful
+  ggtitle("Post Death SkipGram")+ #adding a title
+  ylab("Probability of Close Occurrence")+ #adding a y label
+  theme(plot.title = element_text(hjust = 0.5))+ #centering title
+  xlab(NULL)
+
+# Female Pronouns
+ggplot(Pre_Femalegram)+  #tells which data to use
+  aes(x=reorder(word2,-p_together,sum), y=p_together)+ #Using the word2 and probability data
+  coord_flip()+
+  geom_col(color="firebrick4", fill="lightcoral")+ #extra code to make the graph colorful
+  ggtitle("Pre Female SkipGram")+ #adding a title
+  ylab("Probability of Close Occurrence")+ #adding a y label
+  theme(plot.title = element_text(hjust = 0.5))+ #centering title
+  xlab(NULL)
+
+ggplot(Post_Femalegram)+  #tells which data to use
+  aes(x=reorder(word2,-p_together,sum), y=p_together)+ #Using the word2 and probability data
+  coord_flip()+
+  geom_col(color="firebrick4", fill="lightcoral")+ #extra code to make the graph colorful
+  ggtitle("Post Female SkipGram")+ #adding a title
+  ylab("Probability of Close Occurrence")+ #adding a y label
+  theme(plot.title = element_text(hjust = 0.5))+ #centering title
+  xlab(NULL)
+
+#Race
+ggplot(Pre_Race)+  #tells which data to use
+  aes(x=reorder(word2,-p_together,sum), y=p_together)+ #Using the word2 and probability data
+  coord_flip()+
+  geom_col(color="firebrick4", fill="lightcoral")+ #extra code to make the graph colorful
+  ggtitle("Pre Race SkipGram")+ #adding a title
+  ylab("Probability of Close Occurrence")+ #adding a y label
+  theme(plot.title = element_text(hjust = 0.5))+ #centering title
+  xlab(NULL)
+
+ggplot(Post_Race)+  #tells which data to use
+  aes(x=reorder(word2,-p_together,sum), y=p_together)+ #Using the word2 and probability data
+  coord_flip()+
+  geom_col(color="firebrick4", fill="lightcoral")+ #extra code to make the graph colorful
+  ggtitle("Post Race SkipGram")+ #adding a title
+  ylab("Probability of Close Occurrence")+ #adding a y label
+  theme(plot.title = element_text(hjust = 0.5))+ #centering title
+  xlab(NULL)
+
+
