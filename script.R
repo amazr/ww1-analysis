@@ -15,169 +15,199 @@ BING <- get_sentiments("bing")
 ## Create Corpora
 ####################
 
-Pre_1<- gutenberg_download(3659)%>% 
+Pre_1<- gutenberg_download(3659)%>%
+  mutate(lineID = row_number())%>%
   mutate(title = "The Rosary")%>% 
   mutate(author = "Florence L. Barclay")
 Pre_1 <- Pre_1[67:11606,]
 
-Pre_2<- gutenberg_download(5382)%>% 
+Pre_2<- gutenberg_download(5382)%>%
+  mutate(lineID = row_number())%>%
   mutate(title = "A Modern Chronicle")%>% 
   mutate(author = "Winston Churchill")
 Pre_2 <- Pre_2[78:19465,]
 
-Pre_3<- gutenberg_download(13212)%>% 
+Pre_3<- gutenberg_download(13212)%>%
+  mutate(lineID = row_number())%>%
   mutate(title = "The Wild Olive")%>% 
   mutate(author = "Basil King")
 Pre_3 <- Pre_3[49:10592,]
 
-Pre_4<- gutenberg_download(13054)%>% 
+Pre_4<- gutenberg_download(13054)%>%
+  mutate(lineID = row_number())%>%
   mutate(title = "Max")%>% 
   mutate(author = "Katherine Cecil Thurston")
 Pre_4 <- Pre_4[18:7143,]
 
-Pre_5<- gutenberg_download(42427)%>% 
+Pre_5<- gutenberg_download(42427)%>%
+  mutate(lineID = row_number())%>%
   mutate(title = "The Kingdom of Slender Swords")%>% 
   mutate(author = "Hallie Erminie Rives")
 Pre_5 <- Pre_5[266:10952,]
 
-Pre_6<- gutenberg_download(5257)%>% 
+Pre_6<- gutenberg_download(5257)%>%
+  mutate(lineID = row_number())%>%
   mutate(title = "The Broad Highway")%>% 
   mutate(author = "Jeffrey Farnol")
 Pre_6 <- Pre_6[23:20607,]
 
-Pre_7<- gutenberg_download(5129)%>% 
+Pre_7<- gutenberg_download(5129)%>%
+  mutate(lineID = row_number())%>%
   mutate(title = "The Prodigal Judge")%>% 
   mutate(author = "Vaughan Kester")
 Pre_7 <- Pre_7[12:14108,]
 
-Pre_8<- gutenberg_download(6997)%>% 
+Pre_8<- gutenberg_download(6997)%>%
+  mutate(lineID = row_number())%>%
   mutate(title = "The Winning of Barbara Worth")%>% 
   mutate(author = "Harold Bell Wright")
 Pre_8 <- Pre_8[167:14370,]
 
-Pre_9<- gutenberg_download(14303)%>% 
+Pre_9<- gutenberg_download(14303)%>%
+  mutate(lineID = row_number())%>%
   mutate(title = "Queed")%>% 
   mutate(author = "Henry Sydnor Harrison")
 Pre_9 <- Pre_9[209:16250,]
 
-Pre_10<- gutenberg_download(349)%>% 
+Pre_10<- gutenberg_download(349)%>%
+  mutate(lineID = row_number())%>%
   mutate(title = "The Harvester")%>% 
   mutate(author = "Gene Stratton Porter")
 Pre_10 <- Pre_10[69:15941,]
 
-Pre_11<- gutenberg_download(14394)%>% 
+Pre_11<- gutenberg_download(14394)%>%
+  mutate(lineID = row_number())%>%
   mutate(title = "The Street Called Straight")%>% 
   mutate(author = "Basil King")
 Pre_11 <- Pre_11[42:12113,]
 
-Pre_12<- gutenberg_download(6105)%>% 
+Pre_12<- gutenberg_download(6105)%>%
+  mutate(lineID = row_number())%>%
   mutate(title = "Their Yesterdays")%>% 
   mutate(author = "Harold Bell Wright")
 Pre_12 <- Pre_12[38:6605,]
 
-Pre_13<- gutenberg_download(15817)%>% 
+Pre_13<- gutenberg_download(15817)%>%
+  mutate(lineID = row_number())%>%
   mutate(title = "The Melting of Molly")%>% 
   mutate(author = "Maria Thompson Davies")
 Pre_13 <- Pre_13[82:2939,]
 
-Pre_14<- gutenberg_download(15138)%>% 
+Pre_14<- gutenberg_download(15138)%>%
+  mutate(lineID = row_number())%>%
   mutate(title = "A Hoosier Chronicle")%>% 
   mutate(author = "Meredith Nicholson")
 Pre_14 <- Pre_14[46:16822,]
 
-Pre_15<- gutenberg_download(14581)%>% 
+Pre_15<- gutenberg_download(14581)%>%
+  mutate(lineID = row_number())%>%
   mutate(title = "The Just and the Unjust")%>% 
   mutate(author = "Vaughan Kester")
 Pre_15 <- Pre_15[76:11629,]
 
 Pre_16<- gutenberg_download(5364)%>% 
+  mutate(lineID = row_number())%>%
   mutate(title = "The Inside of the Cup")%>% 
   mutate(author = "Winston Churchill")
 Pre_16 <- Pre_16[72:19286,]
 
 Pre_17<- gutenberg_download(13985)%>% 
+  mutate(lineID = row_number())%>%
   mutate(title = "V.V.'s Eyes")%>% 
   mutate(author = "Henry Sydnor Harrison")
 Pre_17 <- Pre_17[261:20979,]
 
 Pre_18<- gutenberg_download(286)%>% 
+  mutate(lineID = row_number())%>%
   mutate(title = "Laddie")%>% 
   mutate(author = "Gene Stratton Porter")
 Pre_18 <- Pre_18[78:16198,]
 
 Pre_19<- gutenberg_download(3746)%>% 
+  mutate(lineID = row_number())%>%
   mutate(title = "The Judgment House")%>% 
   mutate(author = "Gilbert Parker")
 Pre_19 <- Pre_19[120:16598,]
 
 Pre_20<- gutenberg_download(5145)%>% 
+  mutate(lineID = row_number())%>%
   mutate(title = "Heart of the Hills")%>% 
   mutate(author = "John Fox Jr.")
 Pre_20 <- Pre_20[41:9669,]
 
 Pre_21<- gutenberg_download(11715)%>% 
+  mutate(lineID = row_number())%>%
   mutate(title = "The Eyes of the World")%>% 
   mutate(author = "Harold Bell Wright")
 Pre_21 <- Pre_21[149:12709,]
 
 Pre_22<- gutenberg_download(1450)%>% 
+  mutate(lineID = row_number())%>%
   mutate(title = "Pollyanna")%>% 
   mutate(author = "Eleanor H. Porter")
 Pre_22 <- Pre_22[63:7444,]
 
 Pre_23<- gutenberg_download(36355)%>% 
+  mutate(lineID = row_number())%>%
   mutate(title = "The Salamander")%>% 
   mutate(author = "Owen Johnson")
 Pre_23 <- Pre_23[444:16691,]
 
 Pre_24<- gutenberg_download(4379)%>% 
+  mutate(lineID = row_number())%>%
   mutate(title = "The Fortunate Youth")%>% 
   mutate(author = "William J. Locke")
 Pre_24 <- Pre_24[16:11440,]
 
 Pre_25<- gutenberg_download(2514)%>% 
+  mutate(lineID = row_number())%>%
   mutate(title = "T. Tembarom")%>% 
   mutate(author = "Frances Hodgson Burnett")
 Pre_25 <- Pre_25[11:20384,]
 
 
 Post_1<- gutenberg_download(1484)%>% 
+  mutate(lineID = row_number())%>%
   mutate(title = "The Four Horseman of the Apocalypse")%>% 
   mutate(author = "Vicente Blasco Ibáñez")
-
 Post_1<- Post_1[48:15049,]
 
 Post_2 <-  gutenberg_download(1083) %>% 
+  mutate(lineID = row_number())%>%
   mutate(title = "The Arrow of Gold")%>% 
   mutate(author = "Joseph Conrad")
-
 Post_2 <- Post_2[156:10795, ]
 
 Post_3 <-  gutenberg_download(10201) %>% 
+  mutate(lineID = row_number())%>%
   mutate(title = "The Desert of Wheat")%>% 
   mutate(author = "Zane Grey")
 
 Post_3 <- Post_3[17:13845, ]
 
-Post_4 <-  gutenberg_download(1693) %>% 
+Post_4 <-  gutenberg_download(1693) %>%
+  mutate(lineID = row_number())%>%
   mutate(title = "Dangerous Days")%>% 
   mutate(author = "Mary Roberts Rinehar")
 
 Post_4 <- Post_4[8:15528, ]
 
 Post_5 <-  gutenberg_download(3288) %>% 
+  mutate(lineID = row_number())%>%
   mutate(title = "The Sky Pilot in No Man's Land")%>% 
   mutate(author = "Ralph Connor")
 
 Post_5 <- Post_5[62:13343, ]
 
 Post_6 <-  gutenberg_download(3457) %>% 
+  mutate(lineID = row_number())%>%
   mutate(title = "The Man of the Forest")%>% 
   mutate(author = "Zane Grey")
 
 Post_6 <- Post_6[17:14857, ]
 
 Post_7 <-  gutenberg_download(13532) %>% 
+  mutate(lineID = row_number())%>%
   mutate(title = "Kindred of the Dust")%>% 
   mutate(author = "Peter B. Kyne")
 
@@ -188,82 +218,96 @@ Post_7 <- Post_7[48:11460, ]
 ## leave that up to the group to discuss later to see if we want to 
 ## include a different novel from the same year that is a little longer than this
 Post_8 <-  gutenberg_download(3256) %>% 
+  mutate(lineID = row_number())%>%
   mutate(title = "The Re-Creation of Brian Kent")%>% 
   mutate(author = "Harold Bell Wrigh")
 
 Post_8 <- Post_8[21:733, ]
 
 Post_9 <-  gutenberg_download(4747) %>% 
+  mutate(lineID = row_number())%>%
   mutate(title = "The River's End")%>% 
   mutate(author = "James Oliver Curwood")
 
 Post_9 <- Post_9[13:5612, ]
 
 Post_10 <-  gutenberg_download(17237) %>% 
+  mutate(lineID = row_number())%>%
   mutate(title = "A Man for the Ages")%>% 
   mutate(author = "Irving Bacheller")
 
 Post_10 <- Post_10[276:11673, ]
 
 Post_11 <-  gutenberg_download(543) %>% 
+  mutate(lineID = row_number())%>%
   mutate(title = "Main Street")%>% 
   mutate(author = "Sinclair Lewis")
 
 Post_11 <- Post_11[41:19628, ]
 
 Post_12 <-  gutenberg_download(19457) %>% 
+  mutate(lineID = row_number())%>%
   mutate(title = "The Brimming Cup")%>% 
   mutate(author = "Dorothy Canfield")
 
 Post_12 <- Post_12[111:8205, ]
 
 Post_13 <-  gutenberg_download(13937) %>% 
+  mutate(lineID = row_number())%>%
   mutate(title = "The Mysterious Rider")%>% 
   mutate(author = "Zane Grey")
 
 Post_13 <- Post_13[50:11704, ]
 
 Post_14 <-  gutenberg_download(541) %>% 
+  mutate(lineID = row_number())%>%
   mutate(title = "The Age of Innocence")%>% 
   mutate(author = "Edith Wharton")
 
 Post_14 <- Post_14[18:11540, ]
 
 Post_15 <-  gutenberg_download(4707) %>% 
+  mutate(lineID = row_number())%>%
   mutate(title = "The Valley of Silent Men")%>% 
   mutate(author = "James Oliver Curwood")
 
 Post_15 <- Post_15[26:7499, ]
 
 Post_16 <- gutenberg_download(14145) %>% 
+  mutate(lineID = row_number())%>%
   mutate(title = "If Winter Comes")%>% 
   mutate(author = "A.S.M. Hutchinson")
 
 Post_16 <- Post_16[80:13190, ]
 
 Post_17 <- gutenberg_download(7031) %>% 
+  mutate(lineID = row_number())%>%
   mutate(title = "The Sheik")%>% 
   mutate(author = "Edith M. Hull")
 
 Post_17 <- Post_17[16:8446, ]
 
 Post_18 <- gutenberg_download(18259) %>% 
+  mutate(lineID = row_number())%>%
   mutate(title = "Gentle Julia")%>% 
   mutate(author = "Booth Tarkington")
 
 Post_18 <- Post_18[56:8832, ]
 
 Post_19 <- gutenberg_download(6491) %>% 
+  mutate(lineID = row_number())%>%
   mutate(title = "The Head of the House of Coombe")%>% 
   mutate(author = "Frances Hodgson Burnett")
 
 Post_19 <- Post_19[14:12883, ]
 
 Post_20 <- gutenberg_download(14579) %>% 
+  mutate(lineID = row_number())%>%
   mutate(title = "Simon Called Peter")%>% 
   mutate(author = "Robert Keable")
 
 Post_21 <- gutenberg_download(25542) %>% 
+  mutate(lineID = row_number())%>%
   mutate(title = "Black Oxen")%>% 
   mutate(author = "Gertrude Atherton")
 Post_21 <- Post_21[78:13177, ]
@@ -273,24 +317,29 @@ Post_22 <- pdf_text("His_childrens_children.pdf") %>%
 Post_22 <- Post_22[81:13470]
 Post_22 <- tibble(Post_22) %>% 
   mutate(gutenberg_id = 0)%>% 
-  mutate(title = "His Children's Children")%>% 
-  mutate(author = "Arthur Train")  
+  mutate(lineID = row_number())%>%
+  mutate(title = "His Children's Children")
 Post_22 <- Post_22[, c(2,1,3,4)]
 names(Post_22)[2] <- "text"
+Post_22 <- Post_22%>%
+  mutate(author="Arthur Train")
 
 
 Post_23 <- gutenberg_download(16389) %>% 
+  mutate(lineID = row_number())%>%
   mutate(title = "The Enchanted April")%>% 
   mutate(author = "Elizabeth von Arnim")
 Post_23 <- Post_23[13:8833, ]
 
 Post_24 <- gutenberg_download(1156) %>% 
+  mutate(lineID = row_number())%>%
   mutate(title = "Babbitt")%>% 
   mutate(author = "Sinclair Lewis")
 
 Post_24 <- Post_24[16:14178, ]
 
 Post_25 <- gutenberg_download(60090) %>% 
+  mutate(lineID = row_number())%>%
   mutate(title = "The Dim Lantern")%>% 
   mutate(author = "Temple Bailey")
 
@@ -312,6 +361,27 @@ Clean_Post_Corpora <- clean(Post_Corpora)
 #######################
 ## Functions
 #######################
+
+#Create a list of words sorted by occurence and view
+view_Top_Occurences <- function(corpus)
+{
+  sorted <- corpus %>% 
+    count(word, sort = TRUE)%>%
+    top_n(20)
+  return(sorted)
+}
+
+#Get the sentiment (this ended up being for BING only)
+get_Sentiment <- function(corpus, lexicon)
+{
+  temp <- corpus%>%
+    inner_join(lexicon)%>%
+    count(index = gutenberg_id, sentiment)%>%
+    spread(sentiment, n)%>%
+    mutate(sentiment = positive - negative)%>%
+    arrange(sentiment, .by_group = TRUE)
+  return(temp)
+}
 
 ## Returns the top 15 words of a given emotion
 emotion_Count <- function(corpus, emotion_list)
@@ -362,6 +432,7 @@ create_Word_Prob_Corpus <- function(corpus)
   temp <- corpus%>%
     mutate(lineID = row_number())%>%
     unnest_tokens(word, text, token ="ngrams", n=1)%>%
+    anti_join(SMART)%>%
     count(word, sort = TRUE)%>%
     mutate(p = n/sum(n))
   return(temp)
@@ -372,8 +443,9 @@ create_Skipgrams <- function(corpus)
   temp <- corpus%>%
     unnest_tokens(ngram, text, token = "ngrams", n = 8) %>%     # create 8-grams
     mutate(ngramID = row_number()) %>%                          # create an index of each 8-gram
-    mutate(skipgramID = ngramID)%>%                       # create a nex cobined index joining lineID and ngramID
-    unnest_tokens(word, ngram)                                  # re-tokenize the text by word
+    unite(skipgramID, lineID, ngramID)%>%                       # create a nex cobined index joining lineID and ngramID
+    unnest_tokens(word, ngram)%>%
+    anti_join(SMART)# re-tokenize the text by word
   return(temp)
 }
 
@@ -409,16 +481,6 @@ get_Skipgrams <- function(corpus)
   return(normalized_skipgrams)
 }
 
-get_Female_Probs <- function(normalized_corpus)
-{
-  female_probs <- normalized_corpus%>%
-    filter(word1 == "she" | word1 == "her" | word1 == "hers" | word1 == "woman" | word1 == "girl")%>%
-    arrange(-p_together)
-  female_probs = female_probs[-1,c(2,7)]%>%
-    top_n(25)
-  return(female_probs)
-}
-
 get_Word_Probs <- function(normalized_corpus,word)
 {
   this_probs <- normalized_corpus%>%
@@ -442,20 +504,46 @@ nrc_sadness <- nrc%>%
   filter(sentiment == "sadness")
 nrc_anger <- nrc%>%
   filter(sentiment == "anger")
+nrc_disgust <- nrc%>%
+  filter(sentiment == "disgust")
+nrc_joy <- nrc%>%
+  filter(sentiment == "joy")
 
-pre_fear_percent <- emotion_Percent(Clean_Pre_Corpora, nrc_fear)
-post_fear_percent <- emotion_Percent(Clean_Post_Corpora, nrc_fear) 
 
-pre_sadness_percent <- emotion_Percent(Clean_Pre_Corpora, nrc_sadness)
-post_sadness_percent <- emotion_Percent(Clean_Post_Corpora, nrc_sadness)
+pre_fear <- emotion_Percent(Clean_Pre_Corpora, nrc_fear)
+post_fear <- emotion_Percent(Clean_Post_Corpora, nrc_fear) 
 
-pre_anger_percent <- emotion_Percent(Clean_Pre_Corpora, nrc_anger)
-post_anger_percent <- emotion_Percent(Clean_Post_Corpora, nrc_anger) 
+pre_sadness <- emotion_Percent(Clean_Pre_Corpora, nrc_sadness)
+post_sadness <- emotion_Percent(Clean_Post_Corpora, nrc_sadness)
+
+pre_anger <- emotion_Percent(Clean_Pre_Corpora, nrc_anger)
+post_anger <- emotion_Percent(Clean_Post_Corpora, nrc_anger)
+
+pre_disgust <- emotion_Percent(Clean_Pre_Corpora, nrc_disgust)
+post_disgust <- emotion_Percent(Clean_Post_Corpora, nrc_disgust)
+
+pre_joy <- emotion_Percent(Clean_Pre_Corpora, nrc_joy)
+post_joy <- emotion_Percent(Clean_Post_Corpora, nrc_joy)
 
 #AFINN Sentiment
 AFINN <- lexicon_afinn()
 pre_AFINN_sentiment <- get_AFINN_Sentiment(Clean_Pre_Corpora, AFINN)
 post_AFINN_sentiment <- get_AFINN_Sentiment(Clean_Post_Corpora, AFINN)
+
+#View each corpus
+pre_words <- view_Top_Occurences(Clean_Pre_Corpora)
+post_words <- view_Top_Occurences(Clean_Post_Corpora)
+
+#View the bing sentiment
+pre_BING_sentiment <- get_Sentiment(Clean_Pre_Corpora, BING)
+post_BING_sentiment <- get_Sentiment(Clean_Post_Corpora, BING)
+
+#Calculate total sentiment
+pre_total_sentiment = sum(pre_BING_sentiment$sentiment)
+post_total_sentiment = sum(post_BING_sentiment$sentiment)
+View(rbind(nrow(Clean_Pre_Corpora),nrow(Clean_Post_Corpora)))
+View(rbind(pre_total_sentiment, post_total_sentiment))
+View(rbind((pre_total_sentiment/nrow(Clean_Pre_Corpora))*100,(post_total_sentiment/nrow(Clean_Post_Corpora))*100))
 
 #Negative Words
 pre_top_negative <- get_Contributing_Negative_Words(Clean_Pre_Corpora)
@@ -473,38 +561,28 @@ Post_Wargram <- get_Word_Probs(Post_Skipgrams,"war")
 Pre_Deathgram <- get_Word_Probs(Pre_Skipgrams,"death")
 Post_Deathgram <- get_Word_Probs(Post_Skipgrams,"death")
 
-Pre_Femalegram <- get_Female_Probs(Pre_Skipgrams)
-Post_Femalegram <- get_Female_Probs(Post_Skipgrams)
-
-Pre_Race <- get_Word_Probs(Pre_Skipgrams,"race")
-Post_Race <- get_Word_Probs(Post_Skipgrams,"race")
+Pre_Womangram <- get_Word_Probs(Pre_Skipgrams, "woman")
+Post_Womangram <- get_Word_Probs(Post_Skipgrams, "woman")
 
 Pre_American <- get_Word_Probs(Pre_Skipgrams,"american")
 Post_American <- get_Word_Probs(Post_Skipgrams,"american")
-View(Pre_American)
-View(Post_American)
 
 Pre_german <- get_Word_Probs(Pre_Skipgrams,"german")
 Post_german <- get_Word_Probs(Post_Skipgrams,"german")
-View(Pre_german)
-View(Post_german)
 
-Pre_American <- get_Word_Probs(Pre_Skipgrams,"america")
-Post_American <- get_Word_Probs(Post_Skipgrams,"america")
-View(Pre_America)
-View(Post_America)
+Pre_America <- get_Word_Probs(Pre_Skipgrams,"america")
+Post_America <- get_Word_Probs(Post_Skipgrams,"america")
 
 Pre_germany <- get_Word_Probs(Pre_Skipgrams,"germany")
 Post_germany <- get_Word_Probs(Post_Skipgrams,"germany")
-View(Pre_germany)
-View(Post_germany)
 
-
+Pre_love <- get_Word_Probs(Pre_Skipgrams,"love")
+Post_love <- get_Word_Probs(Post_Skipgrams,"love")
 ######################
 ## GGplots
 ######################
 
-#WARARARAWAWRARRWAWR
+#WAR
 ggplot(Pre_Wargram)+  #tells which data to use
   aes(x=reorder(word2,-p_together,sum), y=p_together)+ #Using the word2 and probability data
   coord_flip()+
@@ -543,59 +621,41 @@ ggplot(Post_Deathgram)+  #tells which data to use
   theme(plot.title = element_text(hjust = 0.5))+ #centering title
   xlab(NULL)
 
-# Female Pronouns
-ggplot(Pre_Femalegram)+  #tells which data to use
+# Woman
+ggplot(Pre_Womangram)+  #tells which data to use
   aes(x=reorder(word2,-p_together,sum), y=p_together)+ #Using the word2 and probability data
   coord_flip()+
   geom_col(color="firebrick4", fill="lightcoral")+ #extra code to make the graph colorful
-  ggtitle("Pre Female SkipGram")+ #adding a title
+  ggtitle("Pre Woman SkipGram")+ #adding a title
   ylab("Probability of Close Occurrence")+ #adding a y label
   theme(plot.title = element_text(hjust = 0.5))+ #centering title
   xlab(NULL)
 
-ggplot(Post_Femalegram)+  #tells which data to use
+ggplot(Post_Womangram)+  #tells which data to use
   aes(x=reorder(word2,-p_together,sum), y=p_together)+ #Using the word2 and probability data
   coord_flip()+
   geom_col(color="firebrick4", fill="lightcoral")+ #extra code to make the graph colorful
-  ggtitle("Post Female SkipGram")+ #adding a title
+  ggtitle("Post Woman SkipGram")+ #adding a title
   ylab("Probability of Close Occurrence")+ #adding a y label
   theme(plot.title = element_text(hjust = 0.5))+ #centering title
   xlab(NULL)
 
-#Race
-ggplot(Pre_Race)+  #tells which data to use
+
+#American
+ggplot(Pre_American)+  #tells which data to use
   aes(x=reorder(word2,-p_together,sum), y=p_together)+ #Using the word2 and probability data
   coord_flip()+
   geom_col(color="firebrick4", fill="lightcoral")+ #extra code to make the graph colorful
-  ggtitle("Pre Race SkipGram")+ #adding a title
+  ggtitle("Pre American SkipGram")+ #adding a title
   ylab("Probability of Close Occurrence")+ #adding a y label
   theme(plot.title = element_text(hjust = 0.5))+ #centering title
   xlab(NULL)
 
-ggplot(Post_Race)+  #tells which data to use
+ggplot(Post_American)+  #tells which data to use
   aes(x=reorder(word2,-p_together,sum), y=p_together)+ #Using the word2 and probability data
   coord_flip()+
   geom_col(color="firebrick4", fill="lightcoral")+ #extra code to make the graph colorful
-  ggtitle("Post Race SkipGram")+ #adding a title
-  ylab("Probability of Close Occurrence")+ #adding a y label
-  theme(plot.title = element_text(hjust = 0.5))+ #centering title
-  xlab(NULL)
-
-#America
-ggplot(Pre_America)+  #tells which data to use
-  aes(x=reorder(word2,-p_together,sum), y=p_together)+ #Using the word2 and probability data
-  coord_flip()+
-  geom_col(color="firebrick4", fill="lightcoral")+ #extra code to make the graph colorful
-  ggtitle("Pre America SkipGram")+ #adding a title
-  ylab("Probability of Close Occurrence")+ #adding a y label
-  theme(plot.title = element_text(hjust = 0.5))+ #centering title
-  xlab(NULL)
-
-ggplot(Post_America)+  #tells which data to use
-  aes(x=reorder(word2,-p_together,sum), y=p_together)+ #Using the word2 and probability data
-  coord_flip()+
-  geom_col(color="firebrick4", fill="lightcoral")+ #extra code to make the graph colorful
-  ggtitle("Post America SkipGram")+ #adding a title
+  ggtitle("Post American SkipGram")+ #adding a title
   ylab("Probability of Close Occurrence")+ #adding a y label
   theme(plot.title = element_text(hjust = 0.5))+ #centering title
   xlab(NULL)
@@ -618,3 +678,23 @@ ggplot(Post_german)+  #tells which data to use
   ylab("Probability of Close Occurrence")+ #adding a y label
   theme(plot.title = element_text(hjust = 0.5))+ #centering title
   xlab(NULL)
+
+# Love
+ggplot(Pre_love)+  #tells which data to use
+  aes(x=reorder(word2,-p_together,sum), y=p_together)+ #Using the word2 and probability data
+  coord_flip()+
+  geom_col(color="firebrick4", fill="lightcoral")+ #extra code to make the graph colorful
+  ggtitle("Pre love SkipGram")+ #adding a title
+  ylab("Probability of Close Occurrence")+ #adding a y label
+  theme(plot.title = element_text(hjust = 0.5))+ #centering title
+  xlab(NULL)
+
+ggplot(Post_love)+  #tells which data to use
+  aes(x=reorder(word2,-p_together,sum), y=p_together)+ #Using the word2 and probability data
+  coord_flip()+
+  geom_col(color="firebrick4", fill="lightcoral")+ #extra code to make the graph colorful
+  ggtitle("Post love SkipGram")+ #adding a title
+  ylab("Probability of Close Occurrence")+ #adding a y label
+  theme(plot.title = element_text(hjust = 0.5))+ #centering title
+  xlab(NULL)
+
